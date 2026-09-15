@@ -142,13 +142,13 @@ function Page3() {
       <View style={{flex:1.6 ,flexDirection: "row"}}>  
         <Text style={{flex:0.5 , fontSize: 14, margin: 10, color: "white"}}>Duration</Text>
 
-        <Picker style={{flex:1, color: "white"}}>
+        <Picker style={{flex:1, color: "white"}} dropdownIconColor={"white"} >
          {heures.map((heure) => ( <Picker.Item key={heure} label={heure.toString() + " h"} value={heure} />))}
         </Picker> 
       </View>
 
       <View style={{flex:1 }}>
-        <Picker  style={{color: "white"}}>
+        <Picker  style={{color: "white"}} dropdownIconColor={"white"}>
           {min.map((min) => ( <Picker.Item key={min} label={min.toString()+ " min"} value={min} />))}
         </Picker>
       </View>
