@@ -22,8 +22,8 @@ export default function App() {
 function Page1() {
   return (
   <SafeAreaProvider>
-  <SafeAreaView style={styles.containe}>
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
+  <View style={styles.body}>
     
     <TextInput
       style={[styles.input]}
@@ -59,8 +59,8 @@ function Page1() {
 function Page2() {
     return (
   <SafeAreaProvider>
-  <SafeAreaView style={styles.containe}>
-  <View style={styles.container}>
+  <SafeAreaView style={styles.container}>
+  <View style={styles.body}>
     
     <TextInput
       style={[styles.input]}
@@ -123,8 +123,8 @@ function Page3() {
   return (
     
     <SafeAreaProvider>
-    <SafeAreaView style={styles.containe}>
-    <View style={styles.containerr}>
+    <SafeAreaView style={styles.container}>
+    <View style={styles.body}>
     
     <View style={[styles.radio]}>
       <RadioGroup radioButtons={ options } labelStyle={{color : 'white'}} layout='row'></RadioGroup>
@@ -137,46 +137,27 @@ function Page3() {
       placeholderTextColor='#ffffff'
     />
 
-    <View style={{ flexDirection: "row", alignItems: "center" ,width : "85%"}}>
+    <View style={{ flexDirection: "row", alignItems: "center" ,width : "95%"}}>
 
-      <View style={{flex:1.6 ,flexDirection: "row"}}>  
-        <Text style={{flex:0.5 , fontSize: 14, margin: 10, color: "white"}}>Duration</Text>
+      <View style={{flex:1 ,flexDirection: "row", alignItems: "center" }}>  
+        <Text style={{ fontSize: 14, margin: 10, color: "white"}}>Duration</Text>
 
         <Picker style={{flex:1, color: "white"}} dropdownIconColor={"white"} >
          {heures.map((heure) => ( <Picker.Item key={heure} label={heure.toString() + " h"} value={heure} />))}
         </Picker> 
       </View>
 
-      <View style={{flex:1 }}>
-        <Picker  style={{color: "white"}} dropdownIconColor={"white"}>
+      <View style={{flex:1 ,flexDirection: "row", alignItems: "center" }}>
+        <Text style={{margin: 10, color: "white"}}> : </Text>
+        <Picker  style={{ flex:1, color: "white"}} dropdownIconColor={"white"}>
           {min.map((min) => ( <Picker.Item key={min} label={min.toString()+ " min"} value={min} />))}
         </Picker>
       </View>
 
     </View>
 
-    {/* <View style={{ flexDirection: "row", alignItems: "center" , borderWidth: 2, borderColor: 'black',width : "85%"}}>
-
-      <View style={{flex:1 ,  borderWidth: 2, borderColor: 'yellow',flexDirection: "row" }}>  
-        <Text style={{flex:1 , fontSize: 14, margin: 10, color: "white", borderWidth: 2, borderColor: 'green' }}>Duration</Text>
-
-        <Picker style={{borderWidth: 2, borderColor: 'red'}}>
-         {heures.map((heure) => ( <Picker.Item key={heure} label={heure.toString() + " h"} value={heure} />))}
-        </Picker> 
-      </View>
-
-      <View style={{flex:1}}>
-        <Picker>
-          {min.map((min) => ( <Picker.Item key={min} label={min.toString()+ " min"} value={min} />))}
-        </Picker>
-      </View>
-
-    </View> */}
-    
-    
-
     <TextInput
-      style={[styles.input, { width: '85%', height: 500, verticalAlign: 'top' }]}
+      style={[styles.input, { width: '95%', height: 500, verticalAlign: 'top' }]}
       placeholder='Description'
       placeholderTextColor='#ffffff'
       multiline={ true }
@@ -200,29 +181,17 @@ function Page3() {
 
 
 const styles = StyleSheet.create({
-  container: {
+  body: {
     flex: 1,
     backgroundColor: '#387E7F',
     alignItems: 'center',
-    // borderWidth: 2,
-    // borderColor: 'black',
     justifyContent: 'center',
     width: '90%'
   },
-  containe: {
+  container: {
     flex: 1,
     backgroundColor: '#387E7F',
-    alignItems: 'center',
-    // borderWidth: 2,
-    // borderColor: 'red'
-  },
-   containerr: {
-    flex: 1,
-    backgroundColor: '#387E7F',
-    alignItems: 'center',
-    // borderWidth: 2,
-    // borderColor: 'black',
-    width: '90%'
+    alignItems: 'center'
   },
   input: {
     borderWidth: 1,
@@ -231,7 +200,7 @@ const styles = StyleSheet.create({
     margin: 10,
     color: 'white',
     height: '6%', 
-    width: '85%'
+    width: '95%'
   },
   button:{
     backgroundColor: '#F2A93B',
