@@ -8,8 +8,29 @@ import { styles } from '../styles/Styles.js';
 
 export default function Liste({ navigation, route }) {
 
-  const [recettes, setRecettes] = useState([]);
-
+  const [recettes, setRecettes] = useState([
+    {
+      category: 1,
+      name: "Pancakes",
+      durationHours: 8,
+      durationMinutes: 20,
+      description: "Pancakes avec du sirop d'érable"
+    },
+    {
+      category: 2,
+      name: "Pizza",
+      durationHours: 1,
+      durationMinutes: 15,
+      description: "Pizza au fromage et pepperoni"
+    },
+    {
+      category: 3,
+      name: "Pâtes",
+      durationHours: 10,
+      durationMinutes: 30,
+      description: "Pâtes à la sauce tomate"
+    }
+  ]);
 
   useEffect(() => {
   const nouvelleRecette = route.params?.recette;
@@ -49,9 +70,7 @@ export default function Liste({ navigation, route }) {
 
   return (
     <PageContainer>
-
       
-
       <Button
         title="Add"
         onPress={handleAdd}

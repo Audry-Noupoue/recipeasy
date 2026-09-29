@@ -7,6 +7,8 @@ import Button from '../components/Button.js';
 import Input from '../components/Input.js';
 import { styles } from '../styles/Styles.js';
 import { useState } from 'react';
+import ToastManager, { Toast } from 'toastify-react-native'
+
 
 export default function Formulaire({navigation , route}) {
 
@@ -37,17 +39,17 @@ export default function Formulaire({navigation , route}) {
   function handleSave() {
 
     if (category === '') {
-      alert('Please select a category.');
+      Toast.error('Please select a category!');
       return;
     }
 
     if (name.trim() === '') {
-      alert('Please enter a name.');
+      Toast.error('Please enter a name');  
       return;
     }
 
     if (heure === 0 && minute === 0) {
-      alert('Duration must be greater than 0.');
+      Toast.error('Duration must be greater than 0'); 
       return;
     }
 
@@ -152,6 +154,8 @@ export default function Formulaire({navigation , route}) {
         />
 
       )}
+
+      <ToastManager />
   
       <StatusBar style="auto" />
 
