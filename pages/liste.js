@@ -33,7 +33,7 @@ export default function Liste({ navigation, route }) {
   ]);
 
   useEffect(() => {
-  const nouvelleRecette = route.params?.recette;
+    const nouvelleRecette = route.params?.recette;
 
     if (nouvelleRecette) {
       setRecettes([
@@ -70,7 +70,7 @@ export default function Liste({ navigation, route }) {
 
   return (
     <PageContainer>
-      
+
       <Button
         title="Add"
         onPress={handleAdd}
