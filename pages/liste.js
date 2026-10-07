@@ -134,7 +134,7 @@ export default function Liste({ navigation, route }) {
     return (
       <Pressable
         onPress={() => navigation.navigate('Formulaire', { recette: item })}
-        style={({ pressed }) => ({ backgroundColor: pressed ? 'blue' : 'transparent'})}
+        style={({ pressed }) => ({ backgroundColor: pressed ? '#F2A93B' : 'transparent'})}
       >
         <View style={{ padding: 10, flexDirection: 'row' }}>
 
