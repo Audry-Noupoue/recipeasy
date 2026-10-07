@@ -32,9 +32,31 @@ export default function Liste({ navigation, route }) {
     }
   ]);
 
+  function afficherRecette({ item }) {
+    return (
+      <View style={{
+        padding: 15
+      }}>
+        <Text style={{
+          color: 'white'
+        }}>
+          {item.name}
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <PageContainer>
+
+      <FlatList
+        data={recettes}
+        renderItem={afficherRecette}
+        keyExtractor={(item, index) => item.name + index}
+      />
+
       <StatusBar style="auto" />
+
     </PageContainer>
   );
 }
