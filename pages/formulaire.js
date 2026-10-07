@@ -100,7 +100,7 @@ export default function Formulaire({navigation , route}) {
 
       <View style={[styles.radio]}>
         <RadioGroup radioButtons={ options } labelStyle={{color : 'white'}} layout='row' selectedId={category} onPress={setCategory}></RadioGroup>
-      </View>
+      </View>                   
       
 
       <Input
