@@ -1,6 +1,6 @@
-import { Text } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button.js';
@@ -12,7 +12,7 @@ export default function Liste({ navigation, route }) {
     {
       category: 1,
       name: "Pancakes",
-      durationHours: 8,
+      durationHours: 0,
       durationMinutes: 20,
       description: "Pancakes avec du sirop d'érable"
     },
@@ -26,71 +26,15 @@ export default function Liste({ navigation, route }) {
     {
       category: 3,
       name: "Pâtes",
-      durationHours: 10,
+      durationHours: 0,
       durationMinutes: 30,
       description: "Pâtes à la sauce tomate"
     }
   ]);
 
-  useEffect(() => {
-    const nouvelleRecette = route.params?.recette;
-
-    if (nouvelleRecette) {
-      setRecettes([
-        ...recettes,
-        nouvelleRecette
-      ]);
-    }
-  }, [route.params?.recette]);
-
-  function handleAdd() {
-    navigation.push('Formulaire');
-  }
-
-  function handleView() {
-
-    if (recettes.length === 0) {
-      return;
-    }
-
-    const indexAleatoire = Math.floor(
-      Math.random() * recettes.length
-    );
-
-    const recetteAleatoire = recettes[indexAleatoire];
-
-    navigation.navigate('Formulaire', {
-      recette: recetteAleatoire
-    });
-  }
-
-  const recettesTriees = [...recettes].sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
-
   return (
     <PageContainer>
-
-      <Button
-        title="Add"
-        onPress={handleAdd}
-      />
-
-      <Button
-        title="View"
-        onPress={handleView}
-      />
-
-      <Text style={styles.titre} >
-       Liste des recettes 
-      </Text>
-
-      <Text style={styles.text}>
-        {JSON.stringify(recettesTriees, null, 2)}
-      </Text>
-
       <StatusBar style="auto" />
-
     </PageContainer>
   );
 }
