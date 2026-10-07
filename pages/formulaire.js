@@ -1,5 +1,5 @@
-import { StyleSheet, View, TouchableHighlight, ScrollView, Switch, Text, TextInput } from 'react-native';
-import {RadioGroup} from 'react-native-radio-buttons-group';
+import { View, Text, TextInput } from 'react-native';
+import { RadioGroup } from 'react-native-radio-buttons-group';
 import { Picker } from '@react-native-picker/picker';
 import { StatusBar } from 'expo-status-bar';
 import PageContainer from '../components/PageContainer.js';
@@ -7,65 +7,43 @@ import Button from '../components/Button.js';
 import Input from '../components/Input.js';
 import { styles } from '../styles/Styles.js';
 import { useState } from 'react';
-import ToastManager, { Toast } from 'toastify-react-native'
+import ToastManager, { Toast } from 'toastify-react-native';
 
-
-export default function Formulaire({navigation , route}) {
+export default function Formulaire({ navigation, route }) {
 
   const recette = route.params?.recette;
 
-  const [category, setCategory] = useState(
-    recette?.category?.toString() ?? ''
-  );
-
-  const [name, setName] = useState(
-    recette?.name ?? ''
-  );
-
-  const [heure, setHeure] = useState(
-    recette?.durationHours ?? 0
-  );
-
-  const [minute, setMinute] = useState(
-    recette?.durationMinutes ?? 0
-  );
-
-  const [description, setDescription] = useState(
-    recette?.description ?? ''
-  );
+  const [recetteForm, setRecetteForm] = useState({
+    category: recette?.category?.toString() ?? '', name: recette?.name ?? '',
+    heure: recette?.durationHours ?? 0, minute: recette?.durationMinutes ?? 0,
+    description: recette?.description ?? ''
+  });
 
   const edition = recette !== undefined;
 
   function handleSave() {
-
-    if (category === '') {
+    if (recetteForm.category === '') {
       Toast.error('Please select a category!');
       return;
     }
 
-    if (name.trim() === '') {
-      Toast.error('Please enter a name');  
+    if (recetteForm.name.trim() === '') {
+      Toast.error('Please enter a name');
       return;
     }
 
-    if (heure === 0 && minute === 0) {
-      Toast.error('Duration must be greater than 0'); 
+    if (recetteForm.heure === 0 && recetteForm.minute === 0) {
+      Toast.error('Duration must be greater than 0');
       return;
     }
 
     const nouvelleRecette = {
-      category: Number(category),
-      name: name.trim(),
-      durationHours: Number(heure),
-      durationMinutes: Number(minute),
-      description: description
+      category: Number(recetteForm.category), name: recetteForm.name.trim(),
+      durationHours: Number(recetteForm.heure), durationMinutes: Number(recetteForm.minute),
+      description: recetteForm.description
     };
 
-    console.log(nouvelleRecette);
-
-    navigation.popTo('Liste', {
-      recette: nouvelleRecette
-    });
+    navigation.popTo('Liste', { recette: nouvelleRecette });
   }
 
   function handleDelete() {
@@ -73,25 +51,11 @@ export default function Formulaire({navigation , route}) {
   }
 
   const options = [
-      {
-          id: '1',
-          label: 'Breakfast',
-          value: '1',
-          color: 'white'
-      },
-      {
-          id: '2',
-          label: 'Lunch',
-          value: '2',
-          color: 'white'
-      },
-      {
-          id: '3',
-          label: 'Dinner',
-          value: '3',
-          color: 'white'
-      }
+    { id: '1', label: 'Breakfast', value: '1', color: 'white' },
+    { id: '2', label: 'Lunch', value: '2', color: 'white' },
+    { id: '3', label: 'Dinner', value: '3', color: 'white' }
   ];
+
   const heures = Array.from({ length: 13 }, (_, index) => index);
   const min = Array.from({ length: 60 }, (_, index) => index);
 
@@ -99,32 +63,30 @@ export default function Formulaire({navigation , route}) {
     <PageContainer>
 
       <View style={[styles.radio]}>
-        <RadioGroup radioButtons={ options } labelStyle={{color : 'white'}} layout='row' selectedId={category} onPress={setCategory}></RadioGroup>
-      </View>                   
-      
+        <RadioGroup radioButtons={options} labelStyle={{ color: 'white' }} layout="row" selectedId={recetteForm.category} onPress={(value) => setRecetteForm({ ...recetteForm, category: value })} />
+      </View>
 
-      <Input
-        title = "Name"
-        value={name}
-        onChangeText={setName}
-      />
+      <Input title="Name" value={recetteForm.name} onChangeText={(value) => setRecetteForm({ ...recetteForm, name: value })} />
 
-      <View style={{ flexDirection: "row", alignItems: "center" ,width : "95%"}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', width: '95%' }}>
 
-        <View style={{flex:1 ,flexDirection: "row", alignItems: "center" }}>  
-          <Text style={{ fontSize: 14, margin: 10, color: "white"}}>Duration</Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 14, margin: 10, color: 'white' }}>Duration</Text>
 
-          <Picker style={{flex:1, color: "white"}} dropdownIconColor={"white"} selectedValue={heure}
-            onValueChange={setHeure} >
-          {heures.map((heure) => ( <Picker.Item key={heure} label={heure.toString() + " h"} value={heure} />))}
-          </Picker> 
+          <Picker style={{ flex: 1, color: 'white' }} dropdownIconColor="white" selectedValue={recetteForm.heure} onValueChange={(value) => setRecetteForm({ ...recetteForm, heure: value })}>
+            {heures.map((heure) => (
+              <Picker.Item key={heure} label={heure.toString() + ' h'} value={heure} />
+            ))}
+          </Picker>
         </View>
 
-        <View style={{flex:1 ,flexDirection: "row", alignItems: "center" }}>
-          <Text style={{margin: 10, color: "white"}}> : </Text>
-          <Picker  style={{ flex:1, color: "white"}} dropdownIconColor={"white"}  selectedValue={minute}
-            onValueChange={setMinute}>
-            {min.map((min) => ( <Picker.Item key={min} label={min.toString()+ " min"} value={min} />))}
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ margin: 10, color: 'white' }}>:</Text>
+
+          <Picker style={{ flex: 1, color: 'white' }} dropdownIconColor="white" selectedValue={recetteForm.minute} onValueChange={(value) => setRecetteForm({ ...recetteForm, minute: value })}>
+            {min.map((minute) => (
+              <Picker.Item key={minute} label={minute.toString() + ' min'} value={minute} />
+            ))}
           </Picker>
         </View>
 
@@ -132,31 +94,20 @@ export default function Formulaire({navigation , route}) {
 
       <TextInput
         style={[styles.input, { width: '95%', height: 500, verticalAlign: 'top' }]}
-        placeholder='Description'
-        placeholderTextColor='#ffffff'
-        multiline={ true }
-        value={description}
-        onChangeText={setDescription}
+        placeholder="Description"
+        placeholderTextColor="#ffffff"
+        multiline={true}
+        value={recetteForm.description}
+        onChangeText={(value) => setRecetteForm({ ...recetteForm, description: value })}
       />
 
       {edition ? (
-
-        <Button
-          title="Delete"
-          onPress={handleDelete}
-        />
-
+        <Button title="Delete" onPress={handleDelete} />
       ) : (
-
-        <Button
-          title="Save"
-          onPress={handleSave}
-        />
-
+        <Button title="Save" onPress={handleSave} />
       )}
 
       <ToastManager />
-  
       <StatusBar style="auto" />
 
     </PageContainer>

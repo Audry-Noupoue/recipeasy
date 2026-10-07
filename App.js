@@ -46,7 +46,7 @@ export default function App() {
           component={Liste}
           options={({ navigation }) => ({
             headerRight: () => (
-              <Button
+              <Button style={{ backgroundColor: '#F2A93B'}}
                 onPress={() => navigation.replace('Login')}
               >
                 Log out

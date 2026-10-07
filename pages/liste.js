@@ -1,4 +1,4 @@
-import { Text, View, FlatList, TouchableOpacity  } from 'react-native';
+import { Text, View, FlatList, Pressable   } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useState , useEffect } from 'react';
 
@@ -90,8 +90,23 @@ export default function Liste({ navigation, route }) {
       durationHours: 0,
       durationMinutes: 30,
       description: "Pâtes à la sauce tomate"
-    }
+    }  
   ]);
+
+  useEffect(() => {
+
+    const nouvelleRecette = route.params?.recette;
+
+    if (nouvelleRecette) {
+
+      setRecettes((ancienneListe) => [
+        ...ancienneListe,
+        nouvelleRecette
+      ]);
+       navigation.setParams({ recette: undefined });
+    }
+
+  }, [route.params?.recette]);
 
 
   function afficherCategorie(category) {
@@ -107,93 +122,43 @@ export default function Liste({ navigation, route }) {
     if (category === 3) {
       return '🍽️';
     }
-
-    return '🍴';
   }
 
-
   function afficherDuree(recette) {
-
     return `${recette.durationHours}h${recette.durationMinutes
       .toString()
       .padStart(2, '0')}`;
-
   }
 
-
   function afficherRecette({ item }) {
-
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Formulaire', {
-          recette: item
-        })}
-        activeOpacity={0.6}
+      <Pressable
+        onPress={() => navigation.navigate('Formulaire', { recette: item })}
+        style={({ pressed }) => ({ backgroundColor: pressed ? 'blue' : 'transparent'})}
       >
+        <View style={{ padding: 10, flexDirection: 'row' }}>
 
-        <View style={{
-          padding: 10,
-          flexDirection: 'row'
-        }}>
-
-          <View style={{
-              width: 70,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-
-            <Text style={{
-              fontSize: 30
-            }}>
-              {afficherCategorie(item.category)}
-            </Text>
-
-            <Text style={{
-              color: 'white',
-              marginTop: 5
-            }}>
-              {afficherDuree(item)}
-            </Text>
-
+          <View style={{ width: 40, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontSize: 30 }}>{afficherCategorie(item.category)}</Text>
+            <Text style={{ color: 'white', marginTop: 5 }}>{afficherDuree(item)}</Text>
           </View>
 
-
-          <View style={{
-              flex: 1,
-              marginLeft: 5,
-              justifyContent: 'center'
-            }}>
-
-            <Text style={{
-              color: 'white',
-              fontSize: 18,
-              fontWeight: 'bold'
-            }}>
-              {item.name}
-            </Text>
-
-            <Text style={{
-              color: '#cccccc',
-              marginTop: 5
-            }}>
-              {item.description}
-            </Text>
-
+          <View style={{ flex: 1, marginLeft: 15, justifyContent: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{item.name}</Text>
+            <Text style={{ color: '#cccccc', marginTop: 5 }}>{item.description}</Text>
           </View>
 
-        </View>
-
-      </TouchableOpacity>
+        </View> 
+      </Pressable > 
     );
   }
 
   function handleAdd() {
-    navigation.push('Formulaire');
+    navigation.popTo('Formulaire');
   }
 
-
   return (
-  <PageContainer>
+  <PageContainer> 
 
     {recettes.length === 0 ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -211,6 +176,7 @@ export default function Liste({ navigation, route }) {
         )}
       />
     )}
+
 
     <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
       <Button title="Add" onPress={handleAdd} />
