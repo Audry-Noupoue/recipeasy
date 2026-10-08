@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import PageContainer from '../components/PageContainer.js';
 import Button from '../components/Button.js';
 import Input from '../components/Input.js';
@@ -27,7 +26,6 @@ export default function Create({ navigation }) {
         onPress={handleCreate}
       />
   
-      <StatusBar style="auto" />
 
     </PageContainer>
   );

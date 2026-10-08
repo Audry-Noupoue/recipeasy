@@ -1,10 +1,8 @@
 import { Text, View, FlatList, Pressable   } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { useState , useEffect } from 'react';
 
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button.js';
-import { styles } from '../styles/Styles.js';
 
 export default function Liste({ navigation, route }) {
 
@@ -154,35 +152,32 @@ export default function Liste({ navigation, route }) {
   }
 
   function handleAdd() {
-    navigation.popTo('Formulaire');
+    navigation.navigate('Formulaire');
   }
 
+  const recettesTriees = [...recettes].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
-  <PageContainer> 
+  <PageContainer>
 
-    {recettes.length === 0 ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Aucune recette</Text>
-      </View>
-    ) : (
-      <FlatList
-        data={recettes}
-        renderItem={afficherRecette}
-        keyExtractor={(item, index) => item.name + index}
-        style={{ width: '100%' }}
-        contentContainerStyle={{ paddingBottom: 90 }}
-        ItemSeparatorComponent={() => (
-          <View style={{ height: 1, backgroundColor: 'white' }} />
-        )}
-      />
-    )}
-
+    <FlatList
+      data={recettesTriees}
+      renderItem={afficherRecette}
+      keyExtractor={(item, index) => item.name + index}
+      style={{ flex: 1, width: '100%' }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 90 }}
+      ListEmptyComponent={
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 18 }}>Aucune recette</Text>
+        </View>
+      }
+      ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: 'white' }} />}
+    />
 
     <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
       <Button title="Add" onPress={handleAdd} />
     </View>
 
-    <StatusBar style="auto" />
 
   </PageContainer>
 );

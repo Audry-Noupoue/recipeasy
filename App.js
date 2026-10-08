@@ -6,6 +6,7 @@ import Create from './pages/create.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button } from '@react-navigation/elements';
+import { StatusBar } from 'expo-status-bar';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
+
+      <StatusBar style="light" animated/>
 
       <Stack.Navigator
         initialRouteName="Login"

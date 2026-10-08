@@ -1,5 +1,4 @@
 import { Text} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import PageContainer from '../components/PageContainer.js';
 import Button from '../components/Button.js';
 import { styles } from '../styles/Styles.js';
@@ -38,7 +37,6 @@ export default function Login({ navigation }) {
         sign up!
       </Text>
   
-      <StatusBar style="auto" />
 
     </PageContainer>
   );
