@@ -56,6 +56,33 @@ class RecipeService {
     return resultat.success;
   }
 
+  async update(recette) {
+    const response = await fetch('http://martha.jh.shawinigan.info/queries/update-recipe/execute', {
+      method: 'POST',
+      headers: {
+        'auth': 'YXVkcnk6NjNGMzJlZjExY2I4YjhhNTc1MGNhNSphNjll',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: recette.id,
+        category: recette.category,
+        name: recette.name,
+        duration_hours: recette.durationHours,
+        duration_minutes: recette.durationMinutes,
+        description: recette.description,
+        user_id: auth.currentUser.id
+      })
+    });
+
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const resultat = await response.json();
+
+    if (!resultat.success) throw new Error('Impossible de modifier la recette');
+
+    return resultat.success;
+  }
+
 }
 
 const service = new RecipeService();

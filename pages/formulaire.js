@@ -24,6 +24,7 @@ export default function Formulaire({ navigation, route }) {
   const recette = route.params?.recette;
 
   const [recetteForm, setRecetteForm] = useState({
+    id: recette?.id,
     category: recette?.category ?? 0,
     name: recette?.name ?? '',
     durationHours: recette?.durationHours ?? 0,
@@ -52,8 +53,14 @@ export default function Formulaire({ navigation, route }) {
     setLoading(true);
 
     try {
-      await recipes.create(recetteForm);
+      if (edition) {
+        await recipes.update(recetteForm);
+      } else {
+        await recipes.create(recetteForm);
+      }
+
       navigation.popTo('Liste', { refresh: Date.now() });
+
     } catch (error) {
       Toast.error('Erreur : ' + error.message);
     } finally {
@@ -103,11 +110,11 @@ export default function Formulaire({ navigation, route }) {
         onChangeText={(value) => setRecetteForm({ ...recetteForm, description: value })}
       />
 
-      {edition ? (
-          <Button title="Delete" onPress={handleDelete} />
-        ) : (
-          <Button title={loading ? 'Saving...' : 'Save'} onPress={loading ? undefined : handleSave} />
-      )}
+      <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
+        <Button title={loading ? 'Saving...' : 'Save'} onPress={loading ? undefined : handleSave} />
+
+        {edition && <Button title="Delete" onPress={handleDelete} />}
+      </View> 
 
       <ToastManager />
 
