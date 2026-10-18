@@ -68,8 +68,19 @@ export default function Formulaire({ navigation, route }) {
     }
   }
 
-  function handleDelete() {
-    navigation.popTo('Liste');
+  async function handleDelete() {
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      await recipes.delete(recetteForm.id);
+      navigation.popTo('Liste', { refresh: Date.now() });
+    } catch (error) {
+      Toast.error('Erreur : ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -111,7 +122,7 @@ export default function Formulaire({ navigation, route }) {
       />
 
       <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
-        <Button title={loading ? 'Saving...' : 'Save'} onPress={loading ? undefined : handleSave} />
+        <Button title='Save' onPress={ handleSave} />
 
         {edition && <Button title="Delete" onPress={handleDelete} />}
       </View> 

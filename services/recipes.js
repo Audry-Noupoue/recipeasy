@@ -83,6 +83,30 @@ class RecipeService {
     return resultat.success;
   }
 
+  async delete(id) {
+    const response = await fetch('http://martha.jh.shawinigan.info/queries/delete-recipe/execute', {
+      method: 'POST',
+      headers: {
+        'auth': 'YXVkcnk6NjNGMzJlZjExY2I4YjhhNTc1MGNhNSphNjll',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id,
+        user_id: auth.currentUser.id
+      })
+    });
+
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const resultat = await response.json();
+
+    if (!resultat.success) {
+      throw new Error(resultat.error || resultat.message || 'Impossible de supprimer la recette');
+    }
+
+    return true;
+  }
+
 }
 
 const service = new RecipeService();
