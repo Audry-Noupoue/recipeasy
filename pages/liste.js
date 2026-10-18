@@ -1,110 +1,27 @@
 import { Text, View, FlatList, Pressable   } from 'react-native';
 import { useState , useEffect } from 'react';
+import ToastManager, { Toast } from 'toastify-react-native';
+import recipes from '../services/recipes.js';
 
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button.js';
 
 export default function Liste({ navigation, route }) {
 
-  const [recettes, setRecettes] = useState([
-    {
-      category: 1,
-      name: "Pancakes",
-      durationHours: 0,
-      durationMinutes: 20,
-      description: "Pancakes avec du sirop d'érable"
-    },
-    {
-      category: 2,
-      name: "Pizza",
-      durationHours: 1,
-      durationMinutes: 15,
-      description: "Pizza au fromage et pepperoni"
-    },
-    {
-      category: 3,
-      name: "Pâtes",
-      durationHours: 0,
-      durationMinutes: 30,
-      description: "Pâtes à la sauce tomate"
-    },
-    {
-      category: 1,
-      name: "Pancakes",
-      durationHours: 0,
-      durationMinutes: 20,
-      description: "Pancakes avec du sirop d'érable"
-    },
-    {
-      category: 2,
-      name: "Pizza",
-      durationHours: 1,
-      durationMinutes: 15,
-      description: "Pizza au fromage et pepperoni"
-    },
-    {
-      category: 3,
-      name: "Pâtes",
-      durationHours: 0,
-      durationMinutes: 30,
-      description: "Pâtes à la sauce tomate"
-    },{
-      category: 1,
-      name: "Pancakes",
-      durationHours: 0,
-      durationMinutes: 20,
-      description: "Pancakes avec du sirop d'érable"
-    },
-    {
-      category: 2,
-      name: "Pizza",
-      durationHours: 1,
-      durationMinutes: 15,
-      description: "Pizza au fromage et pepperoni"
-    },
-    {
-      category: 3,
-      name: "Pâtes",
-      durationHours: 0,
-      durationMinutes: 30,
-      description: "Pâtes à la sauce tomate"
-    },{
-      category: 1,
-      name: "Pancakes",
-      durationHours: 0,
-      durationMinutes: 20,
-      description: "Pancakes avec du sirop d'érable"
-    },
-    {
-      category: 2,
-      name: "Pizza",
-      durationHours: 1,
-      durationMinutes: 15,
-      description: "Pizza au fromage et pepperoni"
-    },
-    {
-      category: 3,
-      name: "Pâtes",
-      durationHours: 0,
-      durationMinutes: 30,
-      description: "Pâtes à la sauce tomate"
-    }  
-  ]);
+  const [recettes, setRecettes] = useState([]);
 
   useEffect(() => {
-
-    const nouvelleRecette = route.params?.recette;
-
-    if (nouvelleRecette) {
-
-      setRecettes((ancienneListe) => [
-        ...ancienneListe,
-        nouvelleRecette
-      ]);
-       navigation.setParams({ recette: undefined });
+    async function chargerRecettes() {
+      try {
+        const resultat = await recipes.getAll();
+        setRecettes(resultat);
+      } catch (error) {
+        Toast.error('Erreur de chargement : ' + error.message);
+      }
     }
 
-  }, [route.params?.recette]);
+    chargerRecettes();
+  }, []);
 
 
   function afficherCategorie(category) {
@@ -163,7 +80,7 @@ export default function Liste({ navigation, route }) {
     <FlatList
       data={recettesTriees}
       renderItem={afficherRecette}
-      keyExtractor={(item, index) => item.name + index}
+      keyExtractor={(item) => item.id.toString()}
       style={{ flex: 1, width: '100%' }}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: 90 }}
       ListEmptyComponent={
@@ -178,7 +95,8 @@ export default function Liste({ navigation, route }) {
       <Button title="Add" onPress={handleAdd} />
     </View>
 
-
+    <ToastManager />
+    
   </PageContainer>
 );
 }
