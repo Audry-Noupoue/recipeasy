@@ -7,12 +7,14 @@ import Input from '../components/Input.js';
 import { styles } from '../styles/Styles.js';
 import { useState } from 'react';
 import ToastManager, { Toast } from 'toastify-react-native';
+import recipes from '../services/recipes.js';
 
 const options = ['Breakfast', 'Lunch', 'Dinner'].map((label, index) => ({
   id: (index + 1).toString(),
   label,
   color: 'white'
 }));
+
 
 const heures = Array.from({ length: 13 }, (_, index) => index);
 const min = Array.from({ length: 60 }, (_, index) => index);
@@ -29,9 +31,11 @@ export default function Formulaire({ navigation, route }) {
     description: recette?.description ?? ''
   });
 
+  const [loading, setLoading] = useState(false);
+
   const edition = recette !== undefined;
 
-  function handleSave() {
+  async function handleSave() {
     const erreurs = [];
 
     if (recetteForm.category === 0) erreurs.push('Please select a category!');
@@ -43,7 +47,18 @@ export default function Formulaire({ navigation, route }) {
       return;
     }
 
-    navigation.popTo('Liste', { recette: recetteForm });
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      await recipes.create(recetteForm);
+      navigation.popTo('Liste', { refresh: Date.now() });
+    } catch (error) {
+      Toast.error('Erreur : ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleDelete() {
@@ -89,9 +104,9 @@ export default function Formulaire({ navigation, route }) {
       />
 
       {edition ? (
-        <Button title="Delete" onPress={handleDelete} />
-      ) : (
-        <Button title="Save" onPress={handleSave} />
+          <Button title="Delete" onPress={handleDelete} />
+        ) : (
+          <Button title={loading ? 'Saving...' : 'Save'} onPress={loading ? undefined : handleSave} />
       )}
 
       <ToastManager />

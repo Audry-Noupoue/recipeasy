@@ -21,7 +21,7 @@ export default function Liste({ navigation, route }) {
     }
 
     chargerRecettes();
-  }, []);
+  }, [route.params?.refresh]);
 
 
   function afficherCategorie(category) {
