@@ -8,19 +8,26 @@ class AuthService {
     }
 
     async signUp(credentials) {
-        const response = await fetch("http://martha.jh.shawinigan.info/queries/insert-user/execute", {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: {
-                'auth': 'YXVkcnk6NjNGMzJlZjExY2I4YjhhNTc1MGNhNSphNjll'
-            }
-        }).then((r) => r.json())
+      this.#currentUser = null;
 
-        if (response.success)  {
-            this.#currentUser = new User({ id: response.lastInsertId, username: credentials.username })
-        }
+      const response = await fetch("http://martha.jh.shawinigan.info/queries/insert-user/execute", {
+          method: 'POST',
+          body: JSON.stringify(credentials),
+          headers: {
+              'auth': 'YXVkcnk6NjNGMzJlZjExY2I4YjhhNTc1MGNhNSphNjll',
+              'Content-Type': 'application/json'
+          }
+      });
 
-        return !!this.#currentUser
+      const resultat = await response.json();
+
+      if (!response.ok || !resultat.success) {
+          throw new Error('Username already exists or registration failed!');
+      }
+
+      this.#currentUser = new User({ id: resultat.lastInsertId, username: credentials.username });
+
+      return true;
     }
 
     async logIn(credentials) {
